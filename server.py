@@ -70,7 +70,6 @@ class WebSocket(tornado.websocket.WebSocketHandler):
         sio = cStringIO.StringIO()
         _, frame = camera.read()
         img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        print(img.size)
         img.save(sio, "JPEG")
         try:
             self.write_message(base64.b64encode(sio.getvalue()))
@@ -87,9 +86,9 @@ parser.add_argument("--resolution", type=str, default="high", help="The "
 args = parser.parse_args()
 
 # Use default camera option if 'high'. Scale down if 'medium' or 'low'.
-if args.resultion == "high":
+if args.resolution == "high":
     pass
-if args.resolution == "medium":
+elif args.resolution == "medium":
     camera.set(3, 640)
     camera.set(4, 480)
 elif args.resolution == "low":

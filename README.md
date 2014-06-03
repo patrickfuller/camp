@@ -3,7 +3,7 @@ campi
 
 Another Raspberry Pi camera webserver.
 
-![](img/campi.png)
+![](logo.png)
 
 What it does
 ============
@@ -31,8 +31,8 @@ Installation
 ============
 
 Campi uses Python, [tornado](http://www.tornadoweb.org/en/stable/) to create a
-web server, and [opencv](http://opencv.org/) to interface with the webcam.
-[Pillow](http://pillow.readthedocs.org/en/latest/installation.html) simplifies
+web server, [opencv](http://opencv.org/) to interface with the webcam, and
+[Pillow](http://pillow.readthedocs.org/en/latest/installation.html) to simplify
 image format conversion.
 
 ```
