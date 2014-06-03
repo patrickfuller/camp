@@ -70,6 +70,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
         sio = cStringIO.StringIO()
         _, frame = camera.read()
         img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        print(img.size)
         img.save(sio, "JPEG")
         try:
             self.write_message(base64.b64encode(sio.getvalue()))
@@ -81,7 +82,21 @@ parser = argparse.ArgumentParser(description="Starts a webserver that "
                                  "connects to a webcam.")
 parser.add_argument("--port", type=int, default=8000, help="The "
                     "port on which to serve the website.")
+parser.add_argument("--resolution", type=str, default="high", help="The "
+                    "video resolution. Can be high, medium, or low.")
 args = parser.parse_args()
+
+# Use default camera option if 'high'. Scale down if 'medium' or 'low'.
+if args.resultion == "high":
+    pass
+if args.resolution == "medium":
+    camera.set(3, 640)
+    camera.set(4, 480)
+elif args.resolution == "low":
+    camera.set(3, 320)
+    camera.set(4, 240)
+else:
+    raise Exception("%s not in resolution options." % args.resolution)
 
 handlers = [(r"/", IndexHandler), (r"/login", LoginHandler),
             (r"/websocket", WebSocket),

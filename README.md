@@ -24,7 +24,8 @@ I wanted:
  * Easily customizable webpage
  * Extensible server
 
-Campi does just this. Nothing else.
+Campi does just this. Nothing else. This (hopefully) makes it the simplest
+and fastest option out there.
 
 Installation
 ============
