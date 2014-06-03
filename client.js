@@ -8,7 +8,7 @@ var client = {
 
     // Connects to Pi via websocket
     connect: function (port) {
-        var self = this, video = document.getElementById(".video");
+        var self = this, video = document.getElementById("video");
 
         this.socket = new WebSocket("ws://" + window.location.hostname + ":" + port + "/websocket");
 
@@ -27,6 +27,6 @@ var client = {
 
     // Requests video stream
     readCamera: function () {
-        this.socket.send(JSON.stringify({method: "read_camera", frame_rate: 5}));
+        this.socket.send(JSON.stringify({method: "read_camera", frame_rate: 15}));
     }
 };

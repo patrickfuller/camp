@@ -20,10 +20,9 @@ from PIL import Image
 camera = cv2.VideoCapture(0)
 
 # Hashed password for comparison and a cookie for login cache
-PASSWORD = ("fcb109fa2283b3ba51640e3c93b0307ac6332e5c1434d1b330be513373e65480"
-            "8223797aab1c09be4feba61cc06f2569a93c314e74052f6098b5b8331256967a")
-COOKIE_NAME = "labcamera"
-COOKIE_SECRET = "3RYBOfCdQpevL/OqUK8El1xZgHwQJUcsuOpBR1DY06o="
+with open("password.txt") as in_file:
+    PASSWORD = in_file.read().strip()
+COOKIE_NAME = "campi"
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -72,12 +71,15 @@ class WebSocket(tornado.websocket.WebSocketHandler):
         _, frame = camera.read()
         img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         img.save(sio, "JPEG")
-        self.write_message(base64.b64encode(sio.getvalue()))
+        try:
+            self.write_message(base64.b64encode(sio.getvalue()))
+        except tornado.websocket.WebSocketClosedError:
+            self.camera_loop.stop()
 
 
 parser = argparse.ArgumentParser(description="Starts a webserver that "
                                  "connects to a webcam.")
-parser.add_argument("--port", type=int, default=16000, help="The "
+parser.add_argument("--port", type=int, default=8000, help="The "
                     "port on which to serve the website.")
 args = parser.parse_args()
 
@@ -85,7 +87,7 @@ handlers = [(r"/", IndexHandler), (r"/login", LoginHandler),
             (r"/websocket", WebSocket),
             (r'/static/(.*)', tornado.web.StaticFileHandler,
              {'path': os.path.normpath(os.path.dirname(__file__))})]
-application = tornado.web.Application(handlers, cookie_secret=COOKIE_SECRET)
+application = tornado.web.Application(handlers, cookie_secret=PASSWORD)
 application.listen(args.port)
 
 webbrowser.open("http://localhost:%d/" % args.port, new=2)

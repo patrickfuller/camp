@@ -3,24 +3,19 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>NuMat Login</title>
+        <title>Campi Login</title>
 
         <link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css" />
-        <link href="static/lib/bootstrap.css" rel="stylesheet" type="text/css" />
         <link href="static/style.css" rel="stylesheet" type="text/css" />
     </head>
 
     <body>
-        <div class="container cell-table">
-            <div class="row top cell">
-                <div class="col-xs-12">
-                    <form action="/login" method="POST" class="login-form">
-                        <img class="login-img" src="static/img/campi.png"></img>
-                        <p><input type="password" name="password" /><p>
-                        <p><button class="login-button" type="submit">Log In</button></p>
-                    </form>
-                </div>
-            </div>
+        <div class="centered">
+            <form action="/login" method="POST">
+                <img class="logo" src="static/img/campi.png"></img>
+                <p><input type="password" name="password" /><p>
+                <p><button type="submit">Log In</button></p>
+            </form>
         </div>
     </body>
 </html>
