@@ -53,13 +53,14 @@ button:hover, button:active {
     margin-left: -75px;
 }
 
+.scalable-logo {
+    padding-right: 0;
+    min-width: 50px;
+}
+
 .logo {
     width: 150px;
     margin-bottom: 25px;
-}
-
-.logo-small {
-    width: 75px;
 }
 
 .top {
