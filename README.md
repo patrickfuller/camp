@@ -36,7 +36,7 @@ web server, [opencv](http://opencv.org/) to interface with the webcam, and
 image format conversion.
 
 ```
-sudo apt-get install python-dev python-pip python-opencv
+sudo apt-get install python-dev python-pip python-opencv libjpeg-dev
 sudo pip install tornado Pillow
 ```
 
@@ -45,8 +45,7 @@ run the server.
 
 ```
 git clone https://github.com/patrickfuller/campi.git
-cd campi
-python server.py
+python campi/server.py
 ```
 
 That's it. Navigate to http://your.r.pi.ip:8000 and check out your webcam.
@@ -69,17 +68,10 @@ occasional stranger out, but won't stand up to targeted hacking.
 ####Run on startup
 
 It's nice to have your pi start campi whenever it turns on. Let's make that
-happen.
-
-```
-sudo sh -c 'echo "#!/bin/sh
-nohup python /home/pi/campi/server.py &" > /etc/init.d/campi'
-sudo chmod +x /etc/init.d/campi
-```
-
-This creates the file `/etc/init.d/campi`, fills it with a command that runs
-the server, and then sets it to executable. Note that you may need to change the
-path (`/home/pi/campi/server.py`) to point to the right file.
+happen. Type `sudo nano /etc/rc.local` to open this file for editing, and add
+the line `nohup python /home/pi/campi/server.py &` before the last line. Note
+that you may need to change the path (`/home/pi/campi/server.py`) to point to
+the right file.
 
 ####Customization
 

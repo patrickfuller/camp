@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Creates an HTTP server with basic auth and websocket communication.
 """
