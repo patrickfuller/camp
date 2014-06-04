@@ -20,7 +20,8 @@ from PIL import Image
 camera = cv2.VideoCapture(0)
 
 # Hashed password for comparison and a cookie for login cache
-with open("password.txt") as in_file:
+ROOT = os.path.normpath(os.path.dirname(__file__))
+with open(os.path.join(ROOT, "password.txt")) as in_file:
     PASSWORD = in_file.read().strip()
 COOKIE_NAME = "campi"
 
@@ -81,7 +82,7 @@ parser = argparse.ArgumentParser(description="Starts a webserver that "
                                  "connects to a webcam.")
 parser.add_argument("--port", type=int, default=8000, help="The "
                     "port on which to serve the website.")
-parser.add_argument("--resolution", type=str, default="high", help="The "
+parser.add_argument("--resolution", type=str, default="low", help="The "
                     "video resolution. Can be high, medium, or low.")
 args = parser.parse_args()
 
@@ -99,8 +100,7 @@ else:
 
 handlers = [(r"/", IndexHandler), (r"/login", LoginHandler),
             (r"/websocket", WebSocket),
-            (r'/static/(.*)', tornado.web.StaticFileHandler,
-             {'path': os.path.normpath(os.path.dirname(__file__))})]
+            (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': ROOT})]
 application = tornado.web.Application(handlers, cookie_secret=PASSWORD)
 application.listen(args.port)
 
