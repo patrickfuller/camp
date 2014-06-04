@@ -31,13 +31,12 @@ Installation
 ============
 
 Campi uses Python, [tornado](http://www.tornadoweb.org/en/stable/) to create a
-web server, [opencv](http://opencv.org/) to interface with the webcam, and
-[Pillow](http://pillow.readthedocs.org/en/latest/installation.html) to simplify
-image format conversion.
+web server, and [picamera](http://picamera.readthedocs.org/en/release-1.4/) to
+interface with the camera.
 
 ```
-sudo apt-get install python-dev python-pip python-opencv
-sudo pip install tornado Pillow
+sudo apt-get install python-dev python-pip
+sudo pip install tornado picamera
 ```
 
 Once the dependencies are installed on your pi, you can clone this repository and

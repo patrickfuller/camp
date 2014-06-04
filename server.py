@@ -14,10 +14,10 @@ import tornado.web
 import tornado.websocket
 from tornado.ioloop import PeriodicCallback
 
-import cv2
-from PIL import Image
+import picamera
 
-camera = cv2.VideoCapture(0)
+camera = picamera.PiCamera()
+camera.start_preview()
 
 # Hashed password for comparison and a cookie for login cache
 with open("password.txt") as in_file:
@@ -68,9 +68,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
     def loop(self):
         """Sends camera images in an infinite loop."""
         sio = cStringIO.StringIO()
-        _, frame = camera.read()
-        img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        img.save(sio, "JPEG")
+        camera.capture(sio, "jpeg")
         try:
             self.write_message(base64.b64encode(sio.getvalue()))
         except tornado.websocket.WebSocketClosedError:
@@ -85,15 +83,10 @@ parser.add_argument("--resolution", type=str, default="high", help="The "
                     "video resolution. Can be high, medium, or low.")
 args = parser.parse_args()
 
-# Use default camera option if 'high'. Scale down if 'medium' or 'low'.
-if args.resolution == "high":
-    pass
-elif args.resolution == "medium":
-    camera.set(3, 640)
-    camera.set(4, 480)
-elif args.resolution == "low":
-    camera.set(3, 320)
-    camera.set(4, 240)
+# Allow three scales.
+resolutions = {"high": (1280, 720), "medium": (640, 480), "low": (320, 240)}
+if args.resolution in resolutions:
+    camera.resolution = resolutions[args.resolution]
 else:
     raise Exception("%s not in resolution options." % args.resolution)
 
@@ -106,4 +99,7 @@ application.listen(args.port)
 
 webbrowser.open("http://localhost:%d/" % args.port, new=2)
 
-tornado.ioloop.IOLoop.instance().start()
+try:
+    tornado.ioloop.IOLoop.instance().start()
+except:
+    camera.close()
