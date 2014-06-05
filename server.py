@@ -6,7 +6,6 @@ import argparse
 import base64
 import cStringIO
 import hashlib
-import json
 import os
 import time
 import webbrowser
@@ -55,17 +54,15 @@ class WebSocket(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         """Evaluates the function pointed to by json-rpc."""
-        json_rpc = json.loads(message)
 
         # Start an infinite loop when this is called
-        if json_rpc["method"] == "read_camera":
-            delay = 1000.0 / json_rpc["frame_rate"]
-            self.camera_loop = PeriodicCallback(self.loop, delay)
+        if message == "read_camera":
+            self.camera_loop = PeriodicCallback(self.loop, 10)
             self.camera_loop.start()
 
         # Extensibility for other methods
         else:
-            print("Unsupported function: " + message["method"])
+            print("Unsupported function: " + message)
 
     def loop(self):
         """Sends camera images in an infinite loop."""

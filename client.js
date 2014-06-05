@@ -27,6 +27,6 @@ var client = {
 
     // Requests video stream
     readCamera: function () {
-        this.socket.send(JSON.stringify({method: "read_camera", frame_rate: 15}));
+        this.socket.send("read_camera");
     }
 };
