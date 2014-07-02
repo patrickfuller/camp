@@ -23,7 +23,7 @@ camera = cv2.VideoCapture(0)
 ROOT = os.path.normpath(os.path.dirname(__file__))
 with open(os.path.join(ROOT, "password.txt")) as in_file:
     PASSWORD = in_file.read().strip()
-COOKIE_NAME = "campi"
+COOKIE_NAME = "camp"
 
 
 class IndexHandler(tornado.web.RequestHandler):
