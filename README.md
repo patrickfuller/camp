@@ -30,14 +30,16 @@ and fastest option out there.
 Installation
 ============
 
-Camp uses Python, [tornado](http://www.tornadoweb.org/en/stable/) to create a
-web server, [opencv](http://opencv.org/) to interface with the webcam, and
-[Pillow](http://pillow.readthedocs.org/en/latest/installation.html) to simplify
-image format conversion.
+Camp uses [tornado](http://www.tornadoweb.org/en/stable/) to create a
+web server. It can interact with the [Pi camera](http://www.adafruit.com/products/1367)
+with the aptly named [picamera](http://picamera.readthedocs.org/en/release-1.7/)
+module, or it can use USB webcams with [opencv](http://opencv.org/)
+and [Pillow](http://pillow.readthedocs.org/en/latest/installation.html). The
+command below installs both sets of dependencies.
 
 ```
 sudo apt-get install python-dev python-pip python-opencv libjpeg-dev
-sudo pip install tornado Pillow
+sudo pip install tornado Pillow picamera
 ```
 
 Once the dependencies are installed on your pi, you can clone this repository and
@@ -48,11 +50,18 @@ git clone https://github.com/patrickfuller/camp.git
 python camp/server.py
 ```
 
-That's it. Navigate to http://your.r.pi.ip:8000 and check out your webcam.
+Navigate to http://your.r.pi.ip:8000 and check out your webcam.
+
+####USB Camera
+
+Use with `python server.py --use-usb`.
 
 ####Password
 
 ![](img/login.png)
+
+With the `--require-login` flag, camp will open a login page before allowing
+webcam access.
 
 The default password is "raspberry". In order to change it, run this in your
 camp directory:
