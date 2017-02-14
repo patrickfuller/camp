@@ -91,12 +91,14 @@ parser.add_argument("--require-login", action="store_true", help="Require "
                     "a password to log in to webserver.")
 parser.add_argument("--use-usb", action="store_true", help="Use a USB "
                     "webcam instead of the standard Pi camera.")
+parser.add_argument("--usb-id", type=int, default=0, help="The "
+                     "usb camera number to display")
 args = parser.parse_args()
 
 if args.use_usb:
     import cv2
     from PIL import Image
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(args.usb_id)
 else:
     import picamera
     camera = picamera.PiCamera()
