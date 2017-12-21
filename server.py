@@ -50,6 +50,11 @@ class LoginHandler(tornado.web.RequestHandler):
             self.redirect(u"/login?error")
 
 
+class ErrorHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.send_error(status_code=403)
+
+
 class WebSocket(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
@@ -117,6 +122,7 @@ else:
 
 handlers = [(r"/", IndexHandler), (r"/login", LoginHandler),
             (r"/websocket", WebSocket),
+            (r"/static/password.txt", ErrorHandler),
             (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': ROOT})]
 application = tornado.web.Application(handlers, cookie_secret=PASSWORD)
 application.listen(args.port)
