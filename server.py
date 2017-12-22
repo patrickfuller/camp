@@ -50,6 +50,11 @@ class LoginHandler(tornado.web.RequestHandler):
             self.redirect(u"/login?error")
 
 
+class ErrorHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.send_error(status_code=403)
+
+
 class WebSocket(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
@@ -57,8 +62,11 @@ class WebSocket(tornado.websocket.WebSocketHandler):
 
         # Start an infinite loop when this is called
         if message == "read_camera":
-            self.camera_loop = PeriodicCallback(self.loop, 10)
-            self.camera_loop.start()
+            if not args.require_login or self.get_secure_cookie(COOKIE_NAME):
+                self.camera_loop = PeriodicCallback(self.loop, 10)
+                self.camera_loop.start()
+            else:
+                print("Unauthenticated websocket request")
 
         # Extensibility for other methods
         else:
@@ -117,6 +125,7 @@ else:
 
 handlers = [(r"/", IndexHandler), (r"/login", LoginHandler),
             (r"/websocket", WebSocket),
+            (r"/static/password.txt", ErrorHandler),
             (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': ROOT})]
 application = tornado.web.Application(handlers, cookie_secret=PASSWORD)
 application.listen(args.port)
