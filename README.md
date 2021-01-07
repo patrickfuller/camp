@@ -52,11 +52,11 @@ python camp/server.py
 
 Navigate to http://your.r.pi.ip:8000 and check out your webcam.
 
-####USB Camera
+#### USB Camera
 
 Use with `python server.py --use-usb`.
 
-####Password
+#### Password
 
 ![](img/login.png)
 
@@ -76,7 +76,7 @@ This will prompt you for a password, encrypt it, and save the result in
 Note that this level of password protection is basic - it's fine for keeping the
 occasional stranger out, but won't stand up to targeted hacking.
 
-####Run on startup
+#### Run on startup
 
 It's nice to have your pi start camp whenever it turns on. Let's make that
 happen. Type `sudo nano /etc/rc.local` to open this file for editing, and add
@@ -84,7 +84,7 @@ the line `nohup python /home/pi/camp/server.py &` before the last line. Note
 that you may need to change the path (`/home/pi/camp/server.py`) to point to
 the right file.
 
-####Customization
+#### Customization
 
 The website consists of `index.html`, `login.html`, and `style.css`. These can be
 edited to change the look of camp.
