@@ -7,7 +7,6 @@ import base64
 import hashlib
 import os
 import time
-import threading
 import webbrowser
 
 try:
@@ -42,17 +41,12 @@ class LoginHandler(tornado.web.RequestHandler):
 
     def post(self):
         password = self.get_argument("password", "")
-        if hashlib.sha512(password).hexdigest() == PASSWORD:
+        if hashlib.sha512(password.encode()).hexdigest() == PASSWORD:
             self.set_secure_cookie(COOKIE_NAME, str(time.time()))
             self.redirect("/")
         else:
             time.sleep(1)
             self.redirect(u"/login?error")
-
-
-class ErrorHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.send_error(status_code=403)
 
 
 class WebSocket(tornado.websocket.WebSocketHandler):
@@ -128,9 +122,10 @@ else:
 
 handlers = [(r"/", IndexHandler), (r"/login", LoginHandler),
             (r"/websocket", WebSocket),
-            (r"/static/password.txt", ErrorHandler),
-            (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': ROOT})]
-application = tornado.web.Application(handlers, cookie_secret=PASSWORD)
+            (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(ROOT, 'static')})]
+
+secret = base64.b64encode(os.urandom(50)).decode('ascii')
+application = tornado.web.Application(handlers, cookie_secret=secret)
 application.listen(args.port)
 
 webbrowser.open("http://localhost:%d/" % args.port, new=2)
